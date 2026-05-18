@@ -1,0 +1,15 @@
+[Unit]
+Description=PostgreSQL Database for tkterp Odoo
+After=network.target
+
+[Container]
+Image=docker.io/library/postgres:15-alpine
+ContainerName=tkterp-db
+EnvironmentFile=%d/.env
+# Host Path mapping:
+Volume=%d/tkterp-db-data:/var/lib/postgresql/data:Z
+Network=tkterp-net.network
+PublishPort=5432:5432
+
+[Install]
+WantedBy=default.target

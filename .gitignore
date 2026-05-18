@@ -1,0 +1,29 @@
+# Secrets
+.env
+
+# Podman Data (Local persistence)
+tkterp-db-data/
+tkterp-data/
+
+# Odoo Configuration
+# It's better to keep a template and ignore the actual config if it contains secrets
+# odoo.conf
+
+# Python/Odoo standard ignores
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.project
+.pydevproject
+.settings/
+*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
