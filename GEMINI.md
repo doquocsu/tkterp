@@ -2,10 +2,10 @@
 
 ## Project Overview
 **TKTErp** is the dedicated ERP solution for **TKTPlastic**, built on Odoo 19.
- It is architected for maximum portability and security, using **Podman Quadlets** for container orchestration.
- The setup is designed to be identical between local development and the production VPS (Vinahost).
 
+- **Author:** Binh Tran (binhtd.dev@gmail.com)
 - **Core Technologies:** Odoo 19 (Community), PostgreSQL 15, Podman, systemd (Quadlets).
+
 - **Architecture:** Rootless Podman containers managed as systemd services via Quadlet files (`.container`, `.network`).
 - **Environment Management:** Uses a `.env` file for secrets (ignored by Git) and an `.env.example` for templating.
 

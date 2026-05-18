@@ -18,9 +18,9 @@ echo "Enabling linger for $USER..."
 sudo loginctl enable-linger $USER
 
 # 3. Configure Firewall
-# Odoo default port is 8069.
-echo "Configuring firewall for port 8069..."
-sudo firewall-cmd --permanent --add-port=8069/tcp
+# We use port 80 (HTTP) because Odoo is now behind the Nginx proxy.
+echo "Configuring firewall for port 80..."
+sudo firewall-cmd --permanent --add-service=http
 sudo firewall-cmd --reload
 
 # 4. Create Project Structure

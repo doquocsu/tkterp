@@ -61,18 +61,27 @@ The PostgreSQL database is exposed on port **5432**. You can connect using tools
 
 ## VPS Setup (AlmaLinux)
 
-### 1. Install Podman
-AlmaLinux (RHEL-based) comes with excellent Podman support. Install it using:
-```bash
-sudo dnf update -y
-sudo dnf install podman -y
-```
+We use **Podman Quadlets** on AlmaLinux. This allows Odoo to run as a native systemd service.
 
-### 2. Enable Linger
-For rootless containers to stay running after you logout, enable lingering for your user:
-```bash
-loginctl enable-linger $USER
-```
+### Initial Provisioning (One-Time)
+
+Before the GitHub Action can work, you must prepare the server. We have provided a script to automate this:
+
+1. **Upload the script to your VPS:**
+   ```bash
+   scp vps-setup.sh user@your-vps-ip:~/
+   ```
+2. **Run the script on the VPS:**
+   ```bash
+   chmod +x ~/vps-setup.sh
+   ./vps-setup.sh
+   ```
+
+This script will:
+- Install Podman and Git.
+- Enable **user lingering** (so containers stay running after logout).
+- Open **Port 80** in the firewall.
+- Create the folder structure in `~/projects/TKTErp`.
 
 ## GitHub Actions Deployment
 
@@ -97,25 +106,11 @@ Go to your GitHub Repository **Settings > Secrets and variables > Actions** and 
 | `SMTP_SSL` | true/false |
 
 ### 2. How it works
-On every push to the `main` branch, GitHub will:
-1. Connect to your VPS via SSH.
-2. Pull the latest code and custom addons.
-3. Sync your secrets to a `.env` file on the server.
-4. Refresh the Podman Quadlet services.
+On every push to the `main` branch, GitHub will automatically update the VPS.
 
-## Initial VPS Provisioning (One-Time)
+## Author
 
-Before the GitHub Action can work, you must prepare the server. We have provided a script to automate this:
-
-1. **Upload the script to your VPS:**
-   ```bash
-   scp vps-setup.sh user@your-vps-ip:~/
-   ```
-2. **Run the script on the VPS:**
-   ```bash
-   chmod +x ~/vps-setup.sh
-   ./vps-setup.sh
-   ```
-
-This script will install Podman, enable user lingering, open the firewall (8069), and create the necessary folder structure.
+- **Maintainer:** Binh Tran (Trần Đức Bình)
+- **Email:** binhtd.dev@gmail.com
+- **Project:** TKTErp for TKTPlastic
 
