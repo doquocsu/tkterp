@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "odoo-service",
+  "owner": "ahmed-lakosha",
+  "repo": "odoo-plugins",
+  "path": "odoo-service-plugin/odoo-service",
+  "branch": "master",
+  "sha": "ddec9a220fb237e11f7ba84598549892f20c712c",
+  "source": "manual"
+}

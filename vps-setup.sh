@@ -25,7 +25,7 @@ sudo firewall-cmd --reload
 
 # 4. Create Project Structure
 echo "Creating project directories..."
-mkdir -p ~/projects/tkterp/tkterp-addons
+mkdir -p ~/projects/tkterp/tkterp_addons
 mkdir -p ~/projects/tkterp/tkterp-db-data
 mkdir -p ~/projects/tkterp/tkterp-data
 mkdir -p ~/projects/tkterp/nginx/html
@@ -34,7 +34,7 @@ mkdir -p ~/projects/tkterp/nginx/maintenance
 # Set permissions
 chmod -R 777 ~/projects/tkterp/tkterp-db-data
 chmod -R 777 ~/projects/tkterp/tkterp-data
-chmod -R 777 ~/projects/tkterp/tkterp-addons
+chmod -R 777 ~/projects/tkterp/tkterp_addons
 chmod -R 777 ~/projects/tkterp/nginx/maintenance
 
 # 5. Setup systemd directory

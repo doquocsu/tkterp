@@ -45,7 +45,7 @@ done
 podman-compose stop tkterp-app
 if ! podman exec tkterp-db psql -U odoo -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='tkterp'" | grep -q 1 2>/dev/null; then
     echo "Creating database tkterp..."
-    podman-compose run --rm tkterp-app odoo -d tkterp -i base,tkterp_initial_setup --stop-after-init
+    podman-compose run --rm tkterp-app odoo -d tkterp -i base,tkterp_base --stop-after-init
 fi
 echo "Setting admin user password to devadmin..."
 podman-compose run --rm --entrypoint python3 tkterp-app -c "
@@ -60,6 +60,17 @@ conn.commit()
 cur.close()
 conn.close()
 print('Admin password updated to devadmin')
+"
+echo "Setting company currency to VND..."
+podman-compose run --rm --entrypoint python3 tkterp-app -c "
+import psycopg2, os
+conn = psycopg2.connect(host='tkterp-db', dbname='tkterp', user='odoo', password=os.environ['PASSWORD'])
+cur = conn.cursor()
+cur.execute(\"UPDATE res_company SET currency_id = (SELECT id FROM res_currency WHERE name = 'VND') WHERE id = 1\")
+conn.commit()
+cur.close()
+conn.close()
+print('Currency set to VND')
 "
 podman-compose start tkterp-app
 podman-compose restart tkterp-proxy

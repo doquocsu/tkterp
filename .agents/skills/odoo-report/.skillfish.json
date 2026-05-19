@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "odoo-report",
+  "owner": "ahmed-lakosha",
+  "repo": "odoo-plugins",
+  "path": "odoo-report-plugin/odoo-report",
+  "branch": "master",
+  "sha": "4ce6895fe99be35508d5ca1c2f83fcb81f5cec53",
+  "source": "manual"
+}

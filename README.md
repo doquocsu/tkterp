@@ -15,7 +15,7 @@ Then visit [http://localhost:8080](http://localhost:8080) (admin password: `deva
 - `tkterp-app.container` / `tkterp-db.container` / `tkterp-proxy.container`: Podman Quadlet definitions (used in production).
 - `tkterp-net.network`: Private network for container communication.
 - `compose.yaml`: Docker Compose equivalent for local development.
-- `tkterp-addons/`: Directory for custom Odoo modules.
+- `tkterp_addons/`: Directory for custom Odoo modules.
 - `tkterp-db-data/` & `tkterp-data/`: (Ignored) Local persistence for PostgreSQL and Odoo filestore.
 - `odoo.conf.example`: Odoo config template (tracked in git). Actual `odoo.conf` is generated at deploy/dev time.
 - `.env`: (Ignored) Secret environment variables.

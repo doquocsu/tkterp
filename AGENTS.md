@@ -13,7 +13,7 @@
 - `tkterp-app.container`: Odoo application definition.
 - `tkterp-db.container`: PostgreSQL database definition.
 - `tkterp-net.network`: Private bridge network.
-- `tkterp-addons/`: Root directory for all custom Odoo modules.
+- `tkterp_addons/`: Root directory for all custom Odoo modules.
 - `odoo.conf.example`: Odoo configuration template (tracked in git). Actual `odoo.conf` is generated at deploy time.
 - `tkterp-db-data/` & `tkterp-data/`: Local host-path volumes for persistence (ignored by Git).
 
@@ -37,7 +37,7 @@
 - Use `EnvironmentFile=%d/.env` to manage secrets.
 
 ### 2. Custom Modules
-- All new features must be implemented as Odoo modules within the `tkterp-addons/` directory.
+- All new features must be implemented as Odoo modules within the `tkterp_addons/` directory.
 - Follow standard Odoo coding conventions (Python for logic, XML for views).
 
 ### 3. Database Management

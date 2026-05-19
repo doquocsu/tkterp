@@ -42,7 +42,7 @@ done
 # 6. Bootstrap database
 podman-compose stop tkterp-app
 echo "Creating database tkterp..."
-podman-compose run --rm tkterp-app odoo -d tkterp -i base,tkterp_initial_setup --stop-after-init
+podman-compose run --rm tkterp-app odoo -d tkterp -i base,tkterp_base --stop-after-init
 echo "Setting admin user password to devadmin..."
 podman-compose run --rm --entrypoint python3 tkterp-app -c "
 import psycopg2, os
@@ -56,6 +56,17 @@ conn.commit()
 cur.close()
 conn.close()
 print('Admin password updated to devadmin')
+"
+echo "Setting company currency to VND..."
+podman-compose run --rm --entrypoint python3 tkterp-app -c "
+import psycopg2, os
+conn = psycopg2.connect(host='tkterp-db', dbname='tkterp', user='odoo', password=os.environ['PASSWORD'])
+cur = conn.cursor()
+cur.execute(\"UPDATE res_company SET currency_id = (SELECT id FROM res_currency WHERE name = 'VND') WHERE id = 1\")
+conn.commit()
+cur.close()
+conn.close()
+print('Currency set to VND')
 "
 podman-compose start tkterp-app
 podman-compose restart tkterp-proxy

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "odoo-docker",
+  "owner": "ahmed-lakosha",
+  "repo": "odoo-plugins",
+  "path": "odoo-docker-plugin/odoo-docker",
+  "branch": "master",
+  "sha": "f7410316b90aa6c66f991c0450705284510ea8c3",
+  "source": "manual"
+}

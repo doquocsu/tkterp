@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "odoo-test",
+  "owner": "ahmed-lakosha",
+  "repo": "odoo-plugins",
+  "path": "odoo-test-plugin/odoo-test",
+  "branch": "master",
+  "sha": "d97082c24d4f90a089b2ca01a388db09f4ed80eb",
+  "source": "manual"
+}

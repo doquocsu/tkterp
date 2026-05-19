@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "odoo-security",
+  "owner": "ahmed-lakosha",
+  "repo": "odoo-plugins",
+  "path": "odoo-security-plugin/odoo-security",
+  "branch": "master",
+  "sha": "16b40cda8353bd2fd42031e3d45aa4228d9f3b90",
+  "source": "manual"
+}

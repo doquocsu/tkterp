@@ -1,0 +1,4 @@
+[submodule "refs/odoo"]
+	path = refs/odoo
+	url = https://github.com/odoo/odoo.git
+	branch = 19.0

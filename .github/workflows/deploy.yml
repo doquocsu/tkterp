@@ -54,8 +54,8 @@ jobs:
             sed "s|__ADMIN_PASSWORD__|${{ secrets.ODOO_ADMIN_PASSWORD }}|g" odoo.conf.example > odoo.conf
 
             # 6. Ensure data directories exist with correct permissions
-            mkdir -p tkterp-db-data tkterp-data tkterp-addons nginx/html nginx/maintenance
-            chmod -R 777 tkterp-db-data tkterp-data tkterp-addons nginx/maintenance
+            mkdir -p tkterp-db-data tkterp-data tkterp_addons nginx/html nginx/maintenance
+            chmod -R 777 tkterp-db-data tkterp-data tkterp_addons nginx/maintenance
 
             # 7. Link Quadlets to systemd (User mode)
             mkdir -p ~/.config/containers/systemd

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "odoo-upgrade",
+  "owner": "ahmed-lakosha",
+  "repo": "odoo-plugins",
+  "path": "odoo-upgrade-plugin/odoo-upgrade",
+  "branch": "master",
+  "sha": "849221700ffb9055e3d7bc8c48be29d2ab652463",
+  "source": "manual"
+}

@@ -14,7 +14,7 @@ services:
     env_file: .env
     volumes:
       - ./odoo.conf:/etc/odoo/odoo.conf:Z
-      - ./tkterp-addons:/mnt/extra-addons:Z
+      - ./tkterp_addons:/mnt/extra-addons:Z
       - ./tkterp-data:/var/lib/odoo:Z
     depends_on:
       - tkterp-db
