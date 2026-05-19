@@ -45,7 +45,7 @@ done
 podman-compose stop tkterp-app
 if ! podman exec tkterp-db psql -U odoo -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='tkterp'" | grep -q 1 2>/dev/null; then
     echo "Creating database tkterp..."
-    podman-compose run --rm tkterp-app odoo -d tkterp -i base --stop-after-init
+    podman-compose run --rm tkterp-app odoo -d tkterp -i base,tkterp_initial_setup --stop-after-init
 fi
 echo "Setting admin user password to devadmin..."
 podman-compose run --rm --entrypoint python3 tkterp-app -c "

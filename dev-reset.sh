@@ -42,7 +42,7 @@ done
 # 6. Bootstrap database
 podman-compose stop tkterp-app
 echo "Creating database tkterp..."
-podman-compose run --rm tkterp-app odoo -d tkterp -i base --stop-after-init
+podman-compose run --rm tkterp-app odoo -d tkterp -i base,tkterp_initial_setup --stop-after-init
 echo "Setting admin user password to devadmin..."
 podman-compose run --rm --entrypoint python3 tkterp-app -c "
 import psycopg2, os
