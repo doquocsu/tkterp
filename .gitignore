@@ -5,9 +5,8 @@
 tkterp-db-data/
 tkterp-data/
 
-# Odoo Configuration
-# It's better to keep a template and ignore the actual config if it contains secrets
-# odoo.conf
+# Odoo Configuration (generated from odoo.conf.example on deploy)
+odoo.conf
 
 # Python/Odoo standard ignores
 __pycache__/

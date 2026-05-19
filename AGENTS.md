@@ -1,4 +1,4 @@
-# GEMINI.md - Project Instructions for TKTErp (TKTPlastic)
+# AGENTS.md - Project Instructions for TKTErp (TKTPlastic)
 
 ## Project Overview
 **TKTErp** is the dedicated ERP solution for **TKTPlastic**, built on Odoo 19.
@@ -14,7 +14,7 @@
 - `tkterp-db.container`: PostgreSQL database definition.
 - `tkterp-net.network`: Private bridge network.
 - `tkterp-addons/`: Root directory for all custom Odoo modules.
-- `odoo.conf`: Odoo server configuration.
+- `odoo.conf.example`: Odoo configuration template (tracked in git). Actual `odoo.conf` is generated at deploy time.
 - `tkterp-db-data/` & `tkterp-data/`: Local host-path volumes for persistence (ignored by Git).
 
 ## Building and Running
@@ -44,6 +44,10 @@
 - The database is exposed on port `5432` for local development tools (DBeaver, etc.).
 - Direct database edits are allowed for debugging but should be formalized via Odoo `data` or `migration` scripts for permanent changes.
 
-### 4. Security
+### 4. Config Generation
+- `odoo.conf` is generated from `odoo.conf.example` on deploy (CI replaces placeholders).
+- Never commit `odoo.conf` directly — it's in `.gitignore`.
+
+### 5. Security
 - Never commit the `.env` file.
 - Use the `:Z` suffix on all volume mounts to handle SELinux/permission labeling correctly.

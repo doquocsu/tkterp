@@ -1,116 +1,111 @@
 # TKTErp - ERP Solution for TKTPlastic
 
-This project is a customized Odoo 19 environment for **TKTPlastic**, designed for local development and seamless deployment to a VPS using Podman Quadlets.
+This project is a customized Odoo 19 environment for **TKTPlastic**, designed for local development with `podman-compose` and deployment to a VPS via Podman Quadlets + GitHub Actions.
+
+## Quickstart
+
+```bash
+./dev-setup.sh
+```
+
+Then visit [http://localhost:8080](http://localhost:8080) (admin password: `devadmin`).
 
 ## Project Structure
 
-- `tkterp-app.container`: Podman Quadlet definition for the Odoo application.
-- `tkterp-db.container`: Podman Quadlet definition for the PostgreSQL database.
+- `tkterp-app.container` / `tkterp-db.container` / `tkterp-proxy.container`: Podman Quadlet definitions (used in production).
 - `tkterp-net.network`: Private network for container communication.
+- `compose.yaml`: Docker Compose equivalent for local development.
 - `tkterp-addons/`: Directory for custom Odoo modules.
-- `tkterp-db-data/`: (Ignored) Local persistence for PostgreSQL.
-- `tkterp-data/`: (Ignored) Local persistence for Odoo filestore.
-- `odoo.conf`: Odoo configuration file.
+- `tkterp-db-data/` & `tkterp-data/`: (Ignored) Local persistence for PostgreSQL and Odoo filestore.
+- `odoo.conf.example`: Odoo config template (tracked in git). Actual `odoo.conf` is generated at deploy/dev time.
 - `.env`: (Ignored) Secret environment variables.
+- `nginx/`: Nginx reverse proxy config for production.
 
-## Local Setup
+## Local Development
 
 ### 1. Prerequisites
-- Podman installed on your system.
-- `systemd` (standard on most Linux distributions).
+- Podman + podman-compose installed.
 
 ### 2. Configure Environment
-Copy the example environment file and update the passwords:
+
 ```bash
 cp .env.example .env
-# Edit .env with your preferred passwords
+# Edit .env with your passwords
 nano .env
 ```
 
-### 3. Initialize Quadlets
-Link the project files to your user's systemd directory to enable Quadlet management:
+### 3. Start
+
 ```bash
-mkdir -p ~/.config/containers/systemd
-ln -s $(pwd)/*.container ~/.config/containers/systemd/
-ln -s $(pwd)/*.network ~/.config/containers/systemd/
+./dev-setup.sh
 ```
 
-### 4. Start the Application
-Reload systemd to detect the new Quadlets and start the service:
+This will:
+- Generate `odoo.conf` from the template (admin password: `devadmin`).
+- Start all containers via `podman-compose up -d`.
+
+### 4. Access
+
+Odoo is available at [http://localhost:8080](http://localhost:8080).
+
+| Component | Port |
+|-----------|------|
+| Odoo (via Nginx) | `8080` |
+| PostgreSQL (direct) | `5432` |
+
+### 5. Bootstrap Database (Optional)
+
+Skip the manual DB creation screen:
+
 ```bash
-systemctl --user daemon-reload
-systemctl --user start tkterp-app.service
+podman-compose run --rm tkterp-app odoo -d tkterp -i purchase,sale_management,stock,mrp --stop-after-init
 ```
 
-Odoo will be available at [http://localhost:8069](http://localhost:8069).
+### Useful Commands
 
-### 5. Managing the Service
-- **Check status:** `systemctl --user status tkterp-app.service`
-- **View logs:** `journalctl --user -u tkterp-app.service -f`
-- **Stop:** `systemctl --user stop tkterp-app.service`
-- **Restart:** `systemctl --user restart tkterp-app.service`
+```bash
+podman-compose ps          # Container status
+podman-compose logs -f     # Tail logs
+podman-compose down        # Stop containers
+podman-compose restart     # Restart all
+```
 
-## Database Access
+## Production Deployment (VPS)
 
-The PostgreSQL database is exposed on port **5432**. You can connect using tools like DBeaver, pgAdmin, or `psql` using the credentials defined in your `.env` file.
-
-- **Host:** `localhost`
-- **Port:** `5432`
-- **User:** (from .env)
-- **Password:** (from .env)
-
-## VPS Setup (AlmaLinux)
-
-We use **Podman Quadlets** on AlmaLinux. This allows Odoo to run as a native systemd service.
+We use **Podman Quadlets** on AlmaLinux for production. This allows Odoo to run as native systemd services.
 
 ### Initial Provisioning (One-Time)
 
-Before the GitHub Action can work, you must prepare the server. We have provided a script to automate this:
+```bash
+scp vps-setup.sh user@your-vps-ip:~/
+ssh user@your-vps-ip
+chmod +x ~/vps-setup.sh
+./vps-setup.sh
+```
 
-1. **Upload the script to your VPS:**
-   ```bash
-   scp vps-setup.sh user@your-vps-ip:~/
-   ```
-2. **Run the script on the VPS:**
-   ```bash
-   chmod +x ~/vps-setup.sh
-   ./vps-setup.sh
-   ```
+### GitHub Actions Deployment
 
-This script will:
-- Install Podman and Git.
-- Enable **user lingering** (so containers stay running after logout).
-- Open **Port 80** in the firewall.
-- Create the folder structure in `~/projects/TKTErp`.
+The CI/CD workflow (`.github/workflows/deploy.yml`) runs on every push to `main`.
 
-## GitHub Actions Deployment
+#### Required Secrets
 
-The CI/CD workflow is defined in `.github/workflows/deploy.yml`.
-
-### 1. Configure GitHub Secrets
-Go to your GitHub Repository **Settings > Secrets and variables > Actions** and add the following secrets:
-
-| Secret Name | Description |
-| :--- | :--- |
-| `VPS_HOST` | The IP address of your AlmaLinux VPS |
-| `VPS_USER` | The SSH username |
-| `SSH_PRIVATE_KEY` | Your private SSH key |
-| `POSTGRES_USER` | Database username (e.g., odoo) |
-| `POSTGRES_PASSWORD`| Database password |
+| Secret | Description |
+|:---|---|
+| `VPS_HOST` | VPS IP address |
+| `VPS_USER` | SSH username |
+| `SSH_PRIVATE_KEY` | Private SSH key |
+| `POSTGRES_USER` | Database user |
+| `POSTGRES_PASSWORD` | Database password |
 | `POSTGRES_DB` | Initial DB name |
-| `ODOO_ADMIN_PASSWORD`| Odoo Master Password |
+| `ODOO_ADMIN_PASSWORD` | Odoo master admin password |
 | `SMTP_SERVER` | SMTP host |
-| `SMTP_PORT` | SMTP port |
+| `SMTP_PORT` | SMTP port (default 587) |
 | `SMTP_USER` | SMTP username |
-| `SMTP_PASSWORD`| SMTP password |
-| `SMTP_SSL` | true/false |
-
-### 2. How it works
-On every push to the `main` branch, GitHub will automatically update the VPS.
+| `SMTP_PASSWORD` | SMTP password |
+| `SMTP_SSL` | `true` or `false` |
 
 ## Author
 
 - **Maintainer:** Binh Tran (Trần Đức Bình)
 - **Email:** binhtd.dev@gmail.com
 - **Project:** TKTErp for TKTPlastic
-

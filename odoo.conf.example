@@ -1,0 +1,6 @@
+[options]
+addons_path = /mnt/extra-addons,/usr/lib/python3/dist-packages/odoo/addons
+data_dir = /var/lib/odoo
+# DB connection settings are handled by Env Vars (HOST, USER, PASSWORD) via entrypoint
+# This value is replaced at deploy time via GitHub Actions + .env secret
+admin_passwd = __ADMIN_PASSWORD__

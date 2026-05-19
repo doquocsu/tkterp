@@ -1,0 +1,40 @@
+services:
+  tkterp-db:
+    image: docker.io/library/postgres:15-alpine
+    container_name: tkterp-db
+    env_file: .env
+    volumes:
+      - ./tkterp-db-data:/var/lib/postgresql/data:Z
+    networks:
+      - tkterp-net
+
+  tkterp-app:
+    image: docker.io/library/odoo:19.0
+    container_name: tkterp-app
+    env_file: .env
+    volumes:
+      - ./odoo.conf:/etc/odoo/odoo.conf:Z
+      - ./tkterp-addons:/mnt/extra-addons:Z
+      - ./tkterp-data:/var/lib/odoo:Z
+    depends_on:
+      - tkterp-db
+    networks:
+      - tkterp-net
+
+  tkterp-proxy:
+    image: docker.io/library/nginx:alpine
+    container_name: tkterp-proxy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro,Z
+      - ./nginx/html:/usr/share/nginx/html:ro,Z
+      - ./nginx/maintenance:/etc/nginx/maintenance:ro,Z
+    depends_on:
+      - tkterp-app
+    networks:
+      - tkterp-net
+
+networks:
+  tkterp-net:
+    driver: bridge
