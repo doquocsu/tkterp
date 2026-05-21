@@ -32,7 +32,7 @@ fi
 if [ ! -d .venv ]; then
     echo "Creating Python venv for LSP support..."
     uv venv .venv
-    echo "  Installing Odoo requirements (skipping build failures)..."
+    echo "  Installing Odoo requirements (line-by-line, skipping build failures)..."
     while IFS= read -r pkg; do
         pkg="${pkg%%#*}"
         pkg="${pkg%"${pkg##*[![:space:]]}"}"
@@ -40,13 +40,14 @@ if [ ! -d .venv ]; then
         uv pip install "$pkg" 2>/dev/null || true
     done < refs/odoo/requirements.txt
     uv run python3 -c "import psycopg2" 2>/dev/null || uv pip install psycopg2-binary 2>/dev/null || true
-    find tkterp_addons -name requirements.txt -exec echo "  Installing {}..." \; \
-      -exec cat {} + | while IFS= read -r pkg; do
-        pkg="${pkg%%#*}"
-        pkg="${pkg%"${pkg##*[![:space:]]}"}"
-        [ -z "$pkg" ] && continue
-        uv pip install "$pkg" 2>/dev/null || true
-      done
+    for f in tkterp_addons/*/requirements.txt; do
+        [ -f "$f" ] && while IFS= read -r pkg; do
+            pkg="${pkg%%#*}"
+            pkg="${pkg%"${pkg##*[![:space:]]}"}"
+            [ -z "$pkg" ] && continue
+            uv pip install "$pkg" 2>/dev/null || true
+        done < "$f"
+    done
 fi
 
 # 4. Read admin password from .env and generate odoo.conf
