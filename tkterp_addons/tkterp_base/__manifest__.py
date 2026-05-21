@@ -11,6 +11,9 @@
         'web.assets_backend': [
             'tkterp_base/static/src/scss/tkterp_base.scss',
         ],
+        'web.assets_frontend': [
+            'tkterp_base/static/src/scss/tkterp_base.scss',
+        ],
     },
     'installable': True,
     'application': False,

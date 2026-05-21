@@ -75,6 +75,34 @@ print('Currency set to VND')
 podman-compose start tkterp-app
 podman-compose restart tkterp-proxy
 
+echo "Setting company logo..."
+for i in $(seq 1 10); do
+    podman exec tkterp-app python3 -c "import psycopg2, os; conn = psycopg2.connect(host='tkterp-db', dbname='tkterp', user='odoo', password=os.environ['PASSWORD']); conn.close()" 2>/dev/null && break
+    echo "Waiting for Odoo container..."
+    sleep 2
+done
+podman exec tkterp-app python3 -c "
+import base64, os, psycopg2
+conn = psycopg2.connect(host='tkterp-db', dbname='tkterp', user='odoo', password=os.environ['PASSWORD'])
+cur = conn.cursor()
+# Get company's partner_id
+cur.execute('SELECT partner_id FROM res_company WHERE id = 1')
+partner_id = cur.fetchone()[0]
+# Read logo file
+with open('/mnt/extra-addons/tkterp_base/static/tktplastic-logo.png', 'rb') as f:
+    raw = f.read()
+    b64 = base64.b64encode(raw).decode()
+# Update ir_attachment for res.partner.image_1920
+cur.execute(\"UPDATE ir_attachment SET db_datas = %s, mimetype = 'image/png', write_date = NOW() WHERE res_model = 'res.partner' AND res_field = 'image_1920' AND res_id = %s\",
+    (psycopg2.Binary(raw), partner_id))
+# Also update logo_web (attachment=False, stored as base64 text in column)
+cur.execute('UPDATE res_company SET logo_web = %s WHERE id = 1', (b64,))
+conn.commit()
+cur.close()
+conn.close()
+print('Company logo set')
+"
+
 # 7. Show status
 echo ""
 echo "=== Status ==="

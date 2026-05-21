@@ -12,6 +12,9 @@ services:
     image: docker.io/library/odoo:19.0
     container_name: tkterp-app
     env_file: .env
+    environment:
+      # Dev mode enables live SCSS/Python reload. Remove for production.
+      - ODOO_DEV=all,assets
     volumes:
       - ./odoo.conf:/etc/odoo/odoo.conf:Z
       - ./tkterp_addons:/mnt/extra-addons:Z

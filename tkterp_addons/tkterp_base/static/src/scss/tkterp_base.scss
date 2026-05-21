@@ -1,0 +1,133 @@
+:root {
+  --color-neutral: oklch(26% 0.02 28);
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(98% 0.005 28);
+  --color-base-300: oklch(94% 0.01 28);
+  --color-base-content: oklch(22% 0.02 28);
+
+  --color-primary: oklch(60% 0.25 28);
+  --color-secondary: oklch(65% 0.22 340);
+  --color-accent: oklch(60% 0.2 300);
+  --color-info: oklch(82% 0.14 220);
+  --color-success: oklch(70% 0.18 145);
+  --color-warning: oklch(88% 0.18 85);
+  --color-error: oklch(75% 0.18 20);
+  --color-gray: oklch(60% 0 28);
+
+  --color-primary-hover: oklch(from var(--color-primary) calc(l * 0.8) c h);
+
+  --focus-ring-color: oklch(from var(--color-primary) l c h / 0.25);
+  --primary-rgb: 212, 82, 50; // Keep in sync with color-primary changes
+
+  --primary: var(--color-primary);
+
+  --link-color: var(--color-primary);
+  --link-hover-color: var(--color-primary-hover);
+}
+
+.o_main_navbar {
+  --color-navbar: oklch(from var(--color-primary) calc(l * 0.8) c h);
+  --color-navbar-hover: oklch(from var(--color-primary) calc(l * 0.7) c h);
+  background: var(--color-navbar) !important;
+  border-bottom-color: var(--color-navbar-hover) !important;
+  --NavBar-entry-backgroundColor: var(--color-navbar);
+  --NavBar-entry-backgroundColor--hover: var(--color-navbar-hover);
+
+  .o_menu_systray .badge {
+    --o-navbar-badge-bg: var(--color-secondary);
+  }
+}
+
+.btn-primary {
+  --btn-bg: var(--color-primary);
+  --btn-border-color: var(--btn-bg);
+  --btn-hover-bg: var(--color-primary-hover);
+  --btn-hover-border-color: var(--btn-hover-bg);
+  --btn-active-bg: var(--btn-hover-bg);
+  --btn-active-border-color: var(--btn-active-bg);
+  --btn-disabled-bg: var(--color-gray);
+  --btn-disabled-border-color: var(--btn-disabled-bg);
+  --btn-focus-shadow-rgb: var(--primary-rgb);
+}
+
+.btn-outline-primary {
+  --btn-color: var(--color-primary);
+  --btn-border-color: var(--btn-color);
+  --btn-hover-bg: var(--color-primary);
+  --btn-hover-border-color: var(--btn-hover-bg);
+  --btn-active-bg: var(--btn-hover-bg);
+  --btn-active-border-color: var(--btn-active-bg);
+  --btn-disabled-border-color: var(--color-gray);
+}
+
+.o_tour_pointer {
+  --TourPointer__color: var(--color-primary);
+  --TourPointer__color-accent: var(--color-primary-hover);
+}
+
+.oe_login_form .btn-primary {
+  --color-fill: var(--color-primary);
+  background-color: var(--color-fill) !important;
+  border-color: var(--color-fill) !important;
+
+  &:hover {
+    --color-fill: var(--color-primary-hover);
+  }
+}
+
+.text-primary {
+  --color: var(--color-primary);
+}
+
+.form-check-input:checked,
+.form-switch .form-check-input:checked {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
+
+.form-check-input:focus {
+  border-color: var(--color-primary) !important;
+  box-shadow: 0 0 0 0.25rem var(--focus-ring-color) !important;
+}
+
+a,
+.o_link,
+.o_form_field .o_external_button,
+.o_form_field_many2one .o_external_button {
+  color: var(--color-primary);
+
+  &:hover {
+    color: var(--color-primary-hover);
+  }
+}
+
+.o_control_panel {
+  --breadcrumb-color-active: var(--color-primary);
+}
+
+.o_form_view {
+  --o-form-sheet-label-color: var(--color-primary);
+}
+
+.o_statusbar {
+  --Statusbar-progress-color: var(--color-primary);
+}
+
+.dropdown-item.active,
+.dropdown-item:active {
+  --bs-dropdown-link-active-bg: var(--color-primary);
+}
+
+.o_form_sheet_bg>.o_form_sheet {
+  border-top: 4px solid var(--color-primary);
+}
+
+.o_progressbar .o_progress {
+  --ProgressBar-progress-bg: var(--color-primary);
+}
+
+.o_field_statusbar>.o_statusbar_status,
+.o_field_statusbar_duration>.o_statusbar_status,
+.o_field_rotting_statusbar_duration>.o_statusbar_status {
+  --o-statusbar-border-active: var(--color-primary);
+}
