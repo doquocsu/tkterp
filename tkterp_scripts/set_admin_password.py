@@ -1,10 +1,10 @@
-"""Set admin user password using pbkdf2_sha512 (Odoo 19 format)."""
+"""Set admin user password using pbkdf2_sha512 (Odoo 18 format)."""
 import os
 import psycopg2
 from passlib.context import CryptContext
 
 ctx = CryptContext(schemes=['pbkdf2_sha512'])
-password = os.environ.get('ADMIN_PASSWORD', 'devadmin')
+password = os.environ['ADMIN_PASSWORD']
 hash_ = ctx.hash(password)
 
 conn = psycopg2.connect(

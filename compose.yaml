@@ -1,15 +1,17 @@
 services:
   tkterp-db:
-    image: docker.io/library/postgres:15-alpine
+    image: docker.io/library/postgres:18-alpine
     container_name: tkterp-db
     env_file: .env
+    ports:
+      - "5432:5432"
     volumes:
-      - ./tkterp-db-data:/var/lib/postgresql/data:Z
+      - ./tkterp-db-data:/var/lib/postgresql:Z
     networks:
       - tkterp-net
 
   tkterp-app:
-    image: docker.io/library/odoo:19.0
+    image: docker.io/library/odoo:18.0
     container_name: tkterp-app
     env_file: .env
     environment:

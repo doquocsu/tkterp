@@ -22,9 +22,10 @@ echo "Removing database and filestore data..."
 podman unshare find tkterp-db-data/ -mindepth 1 -delete
 podman unshare find tkterp-data/ -mindepth 1 -delete
 
-# 3. Regenerate odoo.conf
+# 3. Read admin password from .env and regenerate odoo.conf
+ADMIN_PASSWORD=$(grep -oP '(?<=^ADMIN_PASSWORD=).*' .env)
 echo "Regenerating odoo.conf..."
-sed 's|__ADMIN_PASSWORD__|devadmin|g' odoo.conf.example > odoo.conf
+sed "s|__ADMIN_PASSWORD__|${ADMIN_PASSWORD}|g" odoo.conf.example > odoo.conf
 
 # 4. Start fresh
 echo "Starting fresh..."
@@ -43,10 +44,8 @@ done
 podman-compose stop tkterp-app
 echo "Creating database tkterp..."
 podman-compose run --rm tkterp-app odoo -d tkterp -i base,tkterp_base --stop-after-init
-echo "Setting admin user password to devadmin..."
+echo "Setting admin user password from ADMIN_PASSWORD env..."
 podman-compose run --rm --entrypoint python3 tkterp-app /scripts/set_admin_password.py
-echo "Setting company currency to VND..."
-podman-compose run --rm --entrypoint python3 tkterp-app /scripts/set_currency_vnd.py
 podman-compose start tkterp-app
 podman-compose restart tkterp-proxy
 
@@ -60,4 +59,4 @@ done
 echo ""
 echo "Database reset complete."
 echo "TKTErp is ready at http://localhost:8080"
-echo "Admin password: devadmin"
+echo "Admin password: ${ADMIN_PASSWORD}"

@@ -24,9 +24,10 @@ if [ ! -f .env ]; then
     exit 0
 fi
 
-# 3. Generate odoo.conf from template
-sed 's|__ADMIN_PASSWORD__|devadmin|g' odoo.conf.example > odoo.conf
-echo "odoo.conf generated (admin password: devadmin)"
+# 3. Read admin password from .env and generate odoo.conf
+ADMIN_PASSWORD=$(grep -oP '(?<=^ADMIN_PASSWORD=).*' .env)
+sed "s|__ADMIN_PASSWORD__|${ADMIN_PASSWORD}|g" odoo.conf.example > odoo.conf
+echo "odoo.conf generated (admin password: ${ADMIN_PASSWORD})"
 
 # 4. Start containers
 echo "Starting containers..."
@@ -47,10 +48,8 @@ if ! podman exec tkterp-db psql -U odoo -d postgres -tAc "SELECT 1 FROM pg_datab
     echo "Creating database tkterp..."
     podman-compose run --rm tkterp-app odoo -d tkterp -i base,tkterp_base --stop-after-init
 fi
-echo "Setting admin user password to devadmin..."
+echo "Setting admin user password from ADMIN_PASSWORD env..."
 podman-compose run --rm --entrypoint python3 tkterp-app /scripts/set_admin_password.py
-echo "Setting company currency to VND..."
-podman-compose run --rm --entrypoint python3 tkterp-app /scripts/set_currency_vnd.py
 podman-compose start tkterp-app
 podman-compose restart tkterp-proxy
 
@@ -67,7 +66,7 @@ echo "=== Status ==="
 podman-compose ps
 echo ""
 echo "TKTErp is ready at http://localhost:8080"
-echo "Admin password: devadmin"
+echo "Admin password: ${ADMIN_PASSWORD}"
 echo ""
 echo "To stop: podman-compose down"
 echo "To view logs: podman-compose logs -f"

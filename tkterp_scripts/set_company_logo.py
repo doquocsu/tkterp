@@ -1,13 +1,14 @@
 """Set company logo from image file."""
+
 import base64
 import os
+
 import psycopg2
 
 logo_path = '/mnt/extra-addons/tkterp_base/static/tktplastic-logo.png'
 
 conn = psycopg2.connect(
-    host='tkterp-db', dbname='tkterp',
-    user='odoo', password=os.environ['PASSWORD']
+    host='tkterp-db', dbname='tkterp', user='odoo', password=os.environ['PASSWORD']
 )
 cur = conn.cursor()
 
@@ -21,7 +22,7 @@ with open(logo_path, 'rb') as f:
 cur.execute(
     "UPDATE ir_attachment SET db_datas = %s, mimetype = 'image/png', write_date = NOW() "
     "WHERE res_model = 'res.partner' AND res_field = 'image_1920' AND res_id = %s",
-    (psycopg2.Binary(raw), partner_id)
+    (psycopg2.Binary(raw), partner_id),
 )
 cur.execute('UPDATE res_company SET logo_web = %s WHERE id = 1', (b64,))
 
