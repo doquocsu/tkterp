@@ -48,6 +48,10 @@
 - `odoo.conf` is generated from `odoo.conf.example` on deploy (CI replaces placeholders).
 - Never commit `odoo.conf` directly — it's in `.gitignore`.
 
-### 5. Security
+### 5. Commit Workflow
+- **ALWAYS ask before committing.** Propose the commit title and wait for approval.
+- Never commit without explicit user confirmation first.
+
+### 6. Security
 - Never commit the `.env` file.
 - Use the `:Z` suffix on all volume mounts to handle SELinux/permission labeling correctly.
