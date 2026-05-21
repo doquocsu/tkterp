@@ -4,6 +4,6 @@
   },
   "python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
   "python.analysis.extraPaths": [
-    "${workspaceFolder}/refs/odoo/odoo"
+    "${workspaceFolder}/refs/odoo"
   ]
 }

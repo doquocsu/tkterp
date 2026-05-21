@@ -2,10 +2,10 @@
 
 import os
 
+import passlib.context
 import psycopg2
-from passlib.context import CryptContext
 
-ctx = CryptContext(schemes=['pbkdf2_sha512'])
+ctx = passlib.context.CryptContext(schemes=['pbkdf2_sha512'])
 password = os.environ['ADMIN_PASSWORD']
 hash_ = ctx.hash(password)
 
@@ -20,4 +20,4 @@ cur.execute('UPDATE res_users SET password = %s WHERE login = %s', (hash_, 'admi
 conn.commit()
 cur.close()
 conn.close()
-print(f'Admin password updated ({len(password)} chars, pbkdf2_sha512)')
+print(f'Admin password updated ({len(password)} chars, pbkdf2_sha512)')  # noqa: T201

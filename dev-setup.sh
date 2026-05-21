@@ -4,6 +4,17 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
+_install_requirements() {
+    local file="$1"
+    [ ! -f "$file" ] && return
+    while IFS= read -r pkg; do
+        pkg="${pkg%%#*}"
+        pkg="${pkg%"${pkg##*[![:space:]]}"}"
+        [ -z "$pkg" ] && continue
+        uv pip install "$pkg" 2>/dev/null || true
+    done < "$file"
+}
+
 echo "=== TKTErp Dev Setup ==="
 
 # 1. Check prerequisites
@@ -33,20 +44,11 @@ if [ ! -d .venv ]; then
     echo "Creating Python venv for LSP support..."
     uv venv .venv
     echo "  Installing Odoo requirements (line-by-line, skipping build failures)..."
-    while IFS= read -r pkg; do
-        pkg="${pkg%%#*}"
-        pkg="${pkg%"${pkg##*[![:space:]]}"}"
-        [ -z "$pkg" ] && continue
-        uv pip install "$pkg" 2>/dev/null || true
-    done < refs/odoo/requirements.txt
+    _install_requirements refs/odoo/requirements.txt
     uv run python3 -c "import psycopg2" 2>/dev/null || uv pip install psycopg2-binary 2>/dev/null || true
+    uv run python3 -c "import passlib" 2>/dev/null || uv pip install passlib 2>/dev/null || true
     for f in tkterp_addons/*/requirements.txt; do
-        [ -f "$f" ] && while IFS= read -r pkg; do
-            pkg="${pkg%%#*}"
-            pkg="${pkg%"${pkg##*[![:space:]]}"}"
-            [ -z "$pkg" ] && continue
-            uv pip install "$pkg" 2>/dev/null || true
-        done < "$f"
+        _install_requirements "$f"
     done
 fi
 
