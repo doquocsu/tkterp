@@ -53,6 +53,9 @@ jobs:
             # 4. Generate odoo.conf from template (substituting admin password)
             sed "s|__ADMIN_PASSWORD__|${{ secrets.ODOO_ADMIN_PASSWORD }}|g" odoo.conf.example > odoo.conf
 
+            # 5. Build custom Odoo image with entrypoint for module requirements
+            podman build -t localhost/tkterp-odoo:18.0 ./docker/odoo
+
             # 6. Ensure data directories exist with correct permissions
             mkdir -p tkterp-db-data tkterp-data tkterp_addons nginx/html nginx/maintenance
             chmod -R 777 tkterp-db-data tkterp-data tkterp_addons nginx/maintenance

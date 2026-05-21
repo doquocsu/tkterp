@@ -8,6 +8,9 @@ tkterp-data/
 # Odoo Configuration (generated from odoo.conf.example on deploy)
 odoo.conf
 
+# Python virtual environment (editor LSP)
+.venv/
+
 # Python/Odoo standard ignores
 __pycache__/
 *.pyc

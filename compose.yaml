@@ -11,7 +11,7 @@ services:
       - tkterp-net
 
   tkterp-app:
-    image: docker.io/library/odoo:18.0
+    build: ./docker/odoo
     container_name: tkterp-app
     env_file: .env
     environment:

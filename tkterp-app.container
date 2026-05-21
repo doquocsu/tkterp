@@ -1,10 +1,10 @@
 [Unit]
-Description=Odoo 19 Application for tkterp
+Description=Odoo 18 Application for tkterp
 After=tkterp-db.service
 Requires=tkterp-db.service
 
 [Container]
-Image=docker.io/library/odoo:19.0
+Image=localhost/tkterp-odoo:18.0
 ContainerName=tkterp-app
 EnvironmentFile=%d/.env
 # Host Path mappings:

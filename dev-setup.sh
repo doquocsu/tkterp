@@ -15,6 +15,10 @@ if ! command -v podman-compose &> /dev/null; then
     echo "ERROR: podman-compose not found. Install it first."
     exit 1
 fi
+if ! command -v uv &> /dev/null; then
+    echo "ERROR: uv not found. Install it first (https://docs.astral.sh/uv/)."
+    exit 1
+fi
 
 # 2. Check .env
 if [ ! -f .env ]; then
@@ -24,16 +28,37 @@ if [ ! -f .env ]; then
     exit 0
 fi
 
-# 3. Read admin password from .env and generate odoo.conf
+# 3. Create Python venv for editor LSP (skips if exists)
+if [ ! -d .venv ]; then
+    echo "Creating Python venv for LSP support..."
+    uv venv .venv
+    echo "  Installing Odoo requirements (skipping build failures)..."
+    while IFS= read -r pkg; do
+        pkg="${pkg%%#*}"
+        pkg="${pkg%"${pkg##*[![:space:]]}"}"
+        [ -z "$pkg" ] && continue
+        uv pip install "$pkg" 2>/dev/null || true
+    done < refs/odoo/requirements.txt
+    uv run python3 -c "import psycopg2" 2>/dev/null || uv pip install psycopg2-binary 2>/dev/null || true
+    find tkterp_addons -name requirements.txt -exec echo "  Installing {}..." \; \
+      -exec cat {} + | while IFS= read -r pkg; do
+        pkg="${pkg%%#*}"
+        pkg="${pkg%"${pkg##*[![:space:]]}"}"
+        [ -z "$pkg" ] && continue
+        uv pip install "$pkg" 2>/dev/null || true
+      done
+fi
+
+# 4. Read admin password from .env and generate odoo.conf
 ADMIN_PASSWORD=$(grep -oP '(?<=^ADMIN_PASSWORD=).*' .env)
 sed "s|__ADMIN_PASSWORD__|${ADMIN_PASSWORD}|g" odoo.conf.example > odoo.conf
 echo "odoo.conf generated (admin password: ${ADMIN_PASSWORD})"
 
-# 4. Start containers
+# 5. Start containers
 echo "Starting containers..."
 podman-compose up -d
 
-# 5. Wait for DB to be ready
+# 6. Wait for DB to be ready
 echo "Waiting for database..."
 for i in $(seq 1 30); do
     if podman exec tkterp-db pg_isready -q 2>/dev/null; then
@@ -42,7 +67,7 @@ for i in $(seq 1 30); do
     sleep 1
 done
 
-# 6. Bootstrap database if it doesn't exist
+# 7. Bootstrap database if it doesn't exist
 podman-compose stop tkterp-app
 if ! podman exec tkterp-db psql -U odoo -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='tkterp'" | grep -q 1 2>/dev/null; then
     echo "Creating database tkterp..."
@@ -60,7 +85,7 @@ for i in $(seq 1 10); do
     sleep 2
 done
 
-# 7. Show status
+# 8. Show status
 echo ""
 echo "=== Status ==="
 podman-compose ps
