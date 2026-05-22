@@ -1,4 +1,4 @@
-FROM odoo:18.0
+FROM docker.io/library/odoo:18.0
 USER root
 COPY entrypoint.sh /entrypoint-custom.sh
 RUN chmod 755 /entrypoint-custom.sh
