@@ -57,11 +57,14 @@ ADMIN_PASSWORD=$(grep -oP '(?<=^ADMIN_PASSWORD=).*' .env)
 sed "s|__ADMIN_PASSWORD__|${ADMIN_PASSWORD}|g" odoo.conf.example > odoo.conf
 echo "odoo.conf generated (admin password: ${ADMIN_PASSWORD})"
 
-# 5. Start containers
+# 5. Ensure data directories exist (permissions fixed by :U mount flag at start)
+mkdir -p tkterp-data tkterp-db-data
+
+# 6. Start containers
 echo "Starting containers..."
 podman-compose up -d
 
-# 6. Wait for DB to be ready
+# 7. Wait for DB to be ready
 echo "Waiting for database..."
 for i in $(seq 1 30); do
     if podman exec tkterp-db pg_isready -q 2>/dev/null; then
@@ -70,7 +73,7 @@ for i in $(seq 1 30); do
     sleep 1
 done
 
-# 7. Bootstrap database if it doesn't exist
+# 8. Bootstrap database if it doesn't exist
 podman-compose stop tkterp-app
 if ! podman exec tkterp-db psql -U odoo -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='tkterp'" | grep -q 1 2>/dev/null; then
     echo "Creating database tkterp..."
@@ -88,7 +91,7 @@ for i in $(seq 1 10); do
     sleep 2
 done
 
-# 8. Show status
+# 9. Show status
 echo ""
 echo "=== Status ==="
 podman-compose ps

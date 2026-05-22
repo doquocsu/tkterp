@@ -6,7 +6,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./tkterp-db-data:/var/lib/postgresql:Z
+      - ./tkterp-db-data:/var/lib/postgresql:U,Z
     networks:
       - tkterp-net
 
@@ -21,7 +21,7 @@ services:
       - ./odoo.conf:/etc/odoo/odoo.conf:Z
       - ./tkterp_addons:/mnt/extra-addons:Z
       - ./tkterp_scripts:/scripts:Z
-      - ./tkterp-data:/var/lib/odoo:Z
+      - ./tkterp-data:/var/lib/odoo:U,Z
     depends_on:
       - tkterp-db
     networks:

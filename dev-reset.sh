@@ -19,8 +19,9 @@ podman-compose down
 
 # 2. Remove data directories (using podman unshare for container-owned files)
 echo "Removing database and filestore data..."
-podman unshare find tkterp-db-data/ -mindepth 1 -delete
-podman unshare find tkterp-data/ -mindepth 1 -delete
+podman unshare find tkterp-db-data/ -mindepth 1 -delete 2>/dev/null || true
+podman unshare find tkterp-data/ -mindepth 1 -delete 2>/dev/null || true
+mkdir -p tkterp-db-data tkterp-data
 
 # 3. Read admin password from .env and regenerate odoo.conf
 ADMIN_PASSWORD=$(grep -oP '(?<=^ADMIN_PASSWORD=).*' .env)
