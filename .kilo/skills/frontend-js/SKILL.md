@@ -2,44 +2,6 @@
 name: frontend-js
 description: |
   Odoo frontend JavaScript patterns for website themes. Covers publicWidget framework (complete pattern with editableMode handling), Owl v1/v2 component patterns, _t() translation best practices, Bootstrap 4-to-5 migration, version detection, and critical development rules. Supports Odoo 14-19.
-
-  <example>
-  Context: User wants to create a publicWidget
-  user: "Create a publicWidget for my Odoo website"
-  assistant: "I will create a publicWidget with editableMode handling and proper cleanup."
-  <commentary>publicWidget creation.</commentary>
-  </example>
-
-  <example>
-  Context: User asks about Owl components
-  user: "How do I create an Owl component in Odoo 18?"
-  assistant: "I will show the Owl v2 pattern with static template and props."
-  <commentary>Owl component pattern.</commentary>
-  </example>
-
-  <example>
-  Context: User needs help with translations
-  user: "How do I translate JavaScript strings in Odoo?"
-  assistant: "Use _t() at DEFINITION TIME for static labels, not runtime wrappers."
-  <commentary>Translation best practices.</commentary>
-  </example>
-
-  <example>
-  Context: User migrating Bootstrap classes
-  user: "Convert Bootstrap 4 classes to Bootstrap 5 for Odoo 17"
-  assistant: "Replace ml-* with ms-*, mr-* with me-*, text-left with text-start."
-  <commentary>Bootstrap migration.</commentary>
-  </example>
-version: "8.0.0"
-author: "TaqaTechno"
-license: "MIT"
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Bash
-  - Grep
-  - Glob
 ---
 
 # Odoo Frontend JavaScript Patterns

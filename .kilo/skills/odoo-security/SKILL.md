@@ -2,43 +2,6 @@
 name: odoo-security
 description: |
   Comprehensive Odoo security auditor for model access rules, HTTP route authentication, sudo() usage, SQL injection risks, and record rule completeness across Odoo 14-19.
-
-  <example>
-  Context: User wants a full security audit
-  user: "Run a complete security audit on my HR module"
-  assistant: "I will audit access rules, HTTP routes, sudo usage, and SQL injection risks across all files in the module."
-  <commentary>Full audit trigger - comprehensive security review.</commentary>
-  </example>
-
-  <example>
-  Context: User wants to check access rules
-  user: "Check if all models have proper access rules in ir.model.access.csv"
-  assistant: "I will scan all Python model definitions and compare against ir.model.access.csv to find missing read/write/create/unlink rules."
-  <commentary>Access check trigger - ir.model.access.csv completeness.</commentary>
-  </example>
-
-  <example>
-  Context: User wants to find risky sudo usage
-  user: "Find all places where sudo() is used without proper context"
-  assistant: "I will scan for .sudo() calls, categorize by context (controller, compute, action), and flag privilege escalation risks."
-  <commentary>Sudo finder trigger - privilege escalation risk analysis.</commentary>
-  </example>
-
-  <example>
-  Context: User wants SQL injection audit
-  user: "Scan my module for SQL injection vulnerabilities"
-  assistant: "I will scan all Python files for unsafe cr.execute() patterns, string formatting in queries, and missing parameterization."
-  <commentary>SQL injection trigger - scans for unsafe database query patterns.</commentary>
-  </example>
-version: "2.1.0"
-author: "TaqaTechno"
-license: "MIT"
-allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
-metadata:
-  mode: "codebase"
-  supported-versions: ["14","15","16","17","18","19"]
-  categories: [security, audit, access-control]
-  filePatterns: ["**/models/*.py", "**/controllers/*.py", "**/security/*.csv", "**/security/*.xml", "**/__manifest__.py", "**/wizard*/*.py"]
 ---
 
 # Odoo Security Skill
