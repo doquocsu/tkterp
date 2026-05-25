@@ -1,10 +1,10 @@
 # AGENTS.md - Project Instructions for TKTErp (TKTPlastic)
 
 ## Project Overview
-**TKTErp** is the dedicated ERP solution for **TKTPlastic**, built on Odoo 19.
+**TKTErp** is the dedicated ERP solution for **TKTPlastic**, built on Odoo 18.
 
 - **Author:** Binh Tran (binhtd.dev@gmail.com)
-- **Core Technologies:** Odoo 19 (Community), PostgreSQL 15, Podman, systemd (Quadlets).
+- **Core Technologies:** Odoo 18 (Community), PostgreSQL 18, Podman, systemd (Quadlets).
 
 - **Architecture:** Rootless Podman containers managed as systemd services via Quadlet files (`.container`, `.network`).
 - **Environment Management:** Uses a `.env` file for secrets (ignored by Git) and an `.env.example` for templating.

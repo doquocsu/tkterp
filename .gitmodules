@@ -2,3 +2,7 @@
 	path = refs/odoo
 	url = https://github.com/odoo/odoo.git
 	branch = 18.0
+[submodule "refs/oca-web"]
+	path = refs/oca-web
+	url = https://github.com/OCA/web.git
+	branch = 18.0
