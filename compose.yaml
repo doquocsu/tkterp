@@ -20,6 +20,7 @@ services:
     volumes:
       - ./odoo.conf:/etc/odoo/odoo.conf:Z
       - ./tkterp_addons:/mnt/extra-addons:Z
+      - ./tkterp-md-addons:/mnt/tkterp-md-addons
       - ./tkterp_scripts:/scripts:Z
       - ./tkterp-data:/var/lib/odoo:U,Z
     depends_on:
