@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <!-- ROOT -->
+
+    <menuitem id="menu_tkt_manufacturing_root"
+              name="TKT San Xuat"
+              sequence="1"/>
+
+
+    <!-- HOẠT ĐỘNG -->
+
+    <menuitem id="menu_tkt_operations"
+              name="Hoạt động"
+              parent="menu_tkt_manufacturing_root"
+              sequence="1"/>
+
+    <menuitem id="menu_tkt_mo"
+              name="Lệnh sản xuất"
+              parent="menu_tkt_operations"
+              action="mrp.mrp_production_action"
+              sequence="1"/>
+
+    <menuitem id="menu_tkt_workorder"
+              name="Công đoạn"
+              parent="menu_tkt_operations"
+              action="mrp.mrp_workorder_todo"
+              sequence="2"/>
+
+    <menuitem id="menu_tkt_unbuild"
+              name="Lệnh tháo gỡ"
+              parent="menu_tkt_operations"
+              action="mrp.mrp_unbuild"
+              sequence="3"/>
+
+    <menuitem id="menu_tkt_scrap"
+              name="Phiếu huỷ"
+              parent="menu_tkt_operations"
+              action="stock.action_stock_scrap"
+              sequence="4"/>
+
+
+    <!-- KẾ HOẠCH -->
+
+    <menuitem id="menu_tkt_planning"
+              name="Kế hoạch"
+              parent="menu_tkt_manufacturing_root"
+              sequence="2"/>
+
+
+    <!-- SẢN PHẨM -->
+
+    <menuitem id="menu_tkt_products"
+              name="Sản phẩm"
+              parent="menu_tkt_manufacturing_root"
+              sequence="3"/>
+
+    <menuitem id="menu_tkt_product"
+              name="Sản phẩm"
+              parent="menu_tkt_products"
+              action="mrp.product_template_action"
+              sequence="1"/>
+
+    <menuitem id="menu_tkt_variant"
+              name="Biến thể sản phẩm"
+              parent="menu_tkt_products"
+              action="mrp.mrp_product_variant_action"
+              sequence="2"/>
+
+    <menuitem id="menu_tkt_bom"
+              name="Định mức nguyên liệu"
+              parent="menu_tkt_products"
+              action="mrp.mrp_bom_form_action"
+              sequence="3"/>
+
+    <menuitem id="menu_tkt_lot"
+              name="Số lô/sê-ri"
+              parent="menu_tkt_products"
+              action="stock.action_production_lot_form"
+              sequence="4"/>
+
+
+    <!-- BÁO CÁO -->
+
+    <menuitem id="menu_tkt_reports"
+              name="Báo cáo"
+              parent="menu_tkt_manufacturing_root"
+              sequence="4"/>
+
+    <menuitem id="menu_tkt_report_workorder"
+              name="Công đoạn"
+              parent="menu_tkt_reports"
+              action="mrp.mrp_workorder_report"
+              sequence="1"/>
+
+    <menuitem id="menu_tkt_report_oee"
+              name="Hiệu suất thiết bị tổng thể"
+              parent="menu_tkt_reports"
+              action="mrp.mrp_workcenter_productivity_report"
+              sequence="2"/>
+
+
+    <!-- CẤU HÌNH -->
+
+    <menuitem id="menu_tkt_config"
+              name="Cấu hình"
+              parent="menu_tkt_manufacturing_root"
+              action="mrp.action_mrp_configuration"
+              sequence="5"/>
+
+    <menuitem id="menu_tkt_workcenter"
+              name="Khu vực sản xuất"
+              parent="menu_tkt_config"
+              action="mrp.mrp_workcenter_action"
+              sequence="1"/>
+
+    <menuitem id="menu_tkt_operation"
+              name="Hoạt động"
+              parent="menu_tkt_config"
+              action="mrp.mrp_routing_action"
+              sequence="2"/>
+
+        <!-- ===================================================== -->
+    <!-- KHÁC -->
+    <!-- ===================================================== -->
+
+    <menuitem id="menu_tkt_other"
+              name="Khác"
+              parent="menu_tkt_manufacturing_root"
+              sequence="20"/>
+
+    <!-- Inventory Overview -->
+
+    <menuitem id="menu_tkt_inventory"
+              name="Tổng quan tồn kho"
+              parent="menu_tkt_other"
+              action="stock.stock_picking_type_action"
+              sequence="1"/>
+
+    <!-- Purchase Orders -->
+
+    <menuitem id="menu_tkt_purchase"
+              name="Đơn mua hàng"
+              parent="menu_tkt_other"
+              action="purchase.purchase_form_action"
+              sequence="2"/>
+
+    <!-- Sale Orders -->
+
+    <menuitem id="menu_tkt_sale"
+              name="Đơn bán hàng"
+              parent="menu_tkt_other"
+              action="sale.action_orders"
+              sequence="3"/>
+
+</odoo>

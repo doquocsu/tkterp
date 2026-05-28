@@ -1,0 +1,51 @@
+<odoo>
+
+    <!-- Category -->
+
+    <record id="module_category_tkt_manufacturing"
+            model="ir.module.category">
+
+        <field name="name">
+            TKT Manufacturing
+        </field>
+
+        <field name="sequence">
+            20
+        </field>
+
+    </record>
+
+
+    <!-- User Group -->
+
+    <record id="group_tkt_manufacturing_user"
+            model="res.groups">
+
+        <field name="name">
+            TKT Manufacturing User
+        </field>
+
+        <field name="category_id"
+               ref="module_category_tkt_manufacturing"/>
+
+    </record>
+
+
+    <!-- Manager Group -->
+
+    <record id="group_tkt_manufacturing_manager"
+            model="res.groups">
+
+        <field name="name">
+            TKT Manufacturing Manager
+        </field>
+
+        <field name="implied_ids"
+               eval="[(4, ref('group_tkt_manufacturing_user'))]"/>
+
+        <field name="category_id"
+               ref="module_category_tkt_manufacturing"/>
+
+    </record>
+
+</odoo>

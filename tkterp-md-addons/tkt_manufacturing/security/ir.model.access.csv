@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+
+access_mrp_user,mrp user,model_mrp_production,tkt_manufacturing.group_tkt_manufacturing_user,1,1,1,0
+
+access_mrp_manager,mrp manager,model_mrp_production,tkt_manufacturing.group_tkt_manufacturing_manager,1,1,1,1
